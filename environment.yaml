@@ -1,0 +1,14 @@
+## install with `mamba env create -f environment.yaml`
+name: phenomics-cv
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - spyder
+  - pip 
+  - pip:
+    - ultralytics
+    - phenopype
+    - phenopype-plugins
+    - jupyter
