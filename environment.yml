@@ -1,5 +1,5 @@
 ## install with `mamba env create -f environment.yaml`
-name: phenomics-cv2
+name: phenomics-cv
 channels:
   - conda-forge
   - defaults
