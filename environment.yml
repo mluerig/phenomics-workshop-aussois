@@ -1,5 +1,5 @@
 ## install with `mamba env create -f environment.yaml`
-name: phenomics-cv
+name: phenomics-cv2
 channels:
   - conda-forge
   - defaults
@@ -9,6 +9,9 @@ dependencies:
   - pip 
   - pip:
     - ultralytics
+    - CLIP
+    - bioencoder
     - phenopype
     - phenopype-plugins
     - jupyter
+    - matplotlib

@@ -1,0 +1,28 @@
+
+processing_steps:
+    - preprocessing:
+        - create_mask:
+            ANNOTATION: {type: mask, id: a, edit: false}
+    - segmentation:
+        - predict_fastSAM:
+            model_id: a
+            prompt: box
+            resize_roi: 512
+        - morphology:
+            operation: open
+            shape: ellipse
+            kernel_size: 5
+            iterations: 2
+        - detect_contour:
+            ANNOTATION: {type: contour, id: a, edit: overwrite}
+    - visualization:
+        - select_canvas:
+            canvas: raw
+        - draw_contour
+        - draw_mask:
+            line_colour: blue
+    - export:
+        - save_canvas
+        - save_annotation:
+            overwrite: true
+

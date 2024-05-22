@@ -1,0 +1,46 @@
+processing_steps:
+    - preprocessing:
+        - blur:
+            kernel_size: 5
+        - create_mask:
+            ANNOTATION: {type: mask, id: a, edit: false}
+            tool: rectangle
+            include: true
+    - segmentation:
+        - threshold:
+            method: adaptive
+            blocksize: 199
+            constant: 5
+        - morphology:
+            operation: open # comment
+            shape: cross
+            kernel_size: 7
+            iterations: 2
+        - morphology:
+            operation: close
+            shape: ellipse
+            kernel_size: 5
+            iterations: 3
+        - detect_contour:
+            ANNOTATION: {type: contour, id: a, edit: overwrite}
+            min_diameter: 0
+            min_area: 1000
+        # - edit_contour
+        # - detect_contour:
+            # ANNOTATION: {type: contour, id: b, edit: overwrite}
+            # min_area: 1000
+    - measurement:
+        - compute_shape_features:
+            ANNOTATION: {type: shape_features, id: a, edit: overwrite}
+        - compute_texture_features:
+            ANNOTATION: {type: texture_features, id: a, edit: overwrite}
+    - visualization:
+        - select_canvas:
+            canvas: raw
+        - draw_contour
+        - draw_mask
+    - export:
+        - save_canvas
+        - save_annotation:
+            overwrite: true
+        - export_csv

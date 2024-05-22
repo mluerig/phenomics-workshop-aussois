@@ -1,0 +1,31 @@
+processing_steps:
+    - preprocessing:
+        - blur:
+            kernel_size: 5
+        - create_mask:
+            ANNOTATION: {type: mask, id: a, edit: false}
+            tool: rectangle
+            include: true
+    - segmentation:
+        - threshold:
+            method: binary
+            value: 160
+        - detect_contour:
+            ANNOTATION: {type: contour, id: a, edit: overwrite}
+            min_diameter: 0
+            min_area: 1000
+    - measurement:
+        - compute_shape_features:
+            ANNOTATION: {type: shape_features, id: a, edit: overwrite}
+        - compute_texture_features:
+            ANNOTATION: {type: texture_features, id: a, edit: overwrite}
+    - visualization:
+        - select_canvas:
+            canvas: raw
+        - draw_contour
+        - draw_mask
+    - export:
+        - save_canvas
+        - save_annotation:
+            overwrite: true
+        - export_csv

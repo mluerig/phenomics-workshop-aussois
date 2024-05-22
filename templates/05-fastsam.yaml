@@ -1,0 +1,32 @@
+processing_steps:
+    - segmentation:
+        - predict_fastSAM:
+            model_id: a
+            prompt: everything
+            resize_roi: 512
+            trim: 0.2
+        - morphology:
+            operation: open
+            shape: ellipse
+            kernel_size: 5
+            iterations: 2
+        - detect_contour:
+            ANNOTATION: {type: contour, id: a, edit: overwrite}
+    - measurement:
+        - compute_shape_features:
+            ANNOTATION: {type: shape_features, id: a, edit: overwrite}
+        - compute_texture_features:
+            ANNOTATION: {type: texture_features, id: a, edit: overwrite}
+    - visualization:
+        - select_canvas:
+            canvas: raw
+        - draw_contour
+    - export:
+        - save_canvas
+        - save_annotation:
+            overwrite: true
+        - export_csv
+        - save_ROI:
+            annotation_type: contour
+            background: transparent
+            dir_path: "phenopype/rois"
